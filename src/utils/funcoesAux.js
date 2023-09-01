@@ -31,8 +31,22 @@ async function buscarCategoria(categoriaId, usuarioId) {
     }
 };
 
+async function buscarTransacao(id, usuarioId) {
+    try {
+        const transacao = await pool.query({
+            text: `SELECT * FROM transacoes WHERE id = $1 AND usuario_id = $2`,
+            values: [id, usuarioId]
+        })
+
+        return transacao
+    } catch (error) {
+        return error.message
+    }
+};
+
 
 module.exports = {
     verificarSeEmailEmUso,
-    buscarCategoria
+    buscarCategoria,
+    buscarTransacao
 }

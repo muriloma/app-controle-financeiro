@@ -1,5 +1,5 @@
 const pool = require('../conexao');
-const { buscarCategoria } = require('../utils/funcoesAux')
+const { buscarCategoria, buscarTransacao } = require('../utils/funcoesAux')
 
 
 const listar = async (req, res) => {
@@ -99,9 +99,37 @@ const extrato = async (req, res) => {
 
 };
 
+const detalhar = async (req, res) => {
+    const { id } = req.params;
+    const usuarioId = req.usuario.id;
+
+    if (isNaN(id)) {
+        return res.status(400).json({ mensagem: "Por favor informe um Id de transação válido." })
+    }
+
+    try {
+        const { rows } = await pool.query({
+            text: `SELECT * FROM transacoes WHERE id = $1 AND usuario_id = $2`,
+            values: [id, usuarioId]
+        });
+
+        const { rows: transacao } = await buscarTransacao(id, usuarioId)
+
+        if (!transacao[0]) {
+            return res.status(404).json({ mensagem: "Transação não encontrada." })
+        }
+
+        return res.status(200).json(transacao[0])
+    } catch (error) {
+        return res.status(500).json({ erro: error.message })
+    };
+};
+
+
 
 module.exports = {
     listar,
     cadastrar,
-    extrato
+    extrato,
+    detalhar
 };

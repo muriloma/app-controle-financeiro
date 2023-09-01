@@ -22,7 +22,7 @@ rotas.get('/categoria/:id', categoria.detalhar)
 rotas.delete('/categoria/:id', categoria.excluir)
 rotas.put('/categoria/:id', categoria.atualizar)
 
+rotas.post('/transacao', transacoes.cadastrar)
 rotas.get('/transacao', transacoes.listar)
-
 
 module.exports = rotas;

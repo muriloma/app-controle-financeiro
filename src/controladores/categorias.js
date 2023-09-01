@@ -1,4 +1,5 @@
 const pool = require('../conexao')
+const { buscarCategoria } = require('../utils/funcoesAux')
 
 const cadastrar = async (req, res) => {
     const { id: usuarioId } = req.usuario
@@ -37,8 +38,32 @@ const listar = async (req, res) => {
     }
 };
 
+const detalhar = async (req, res) => {
+    const { id } = req.params;
+    const idUsuario = req.usuario.id
+
+    if (isNaN(id)) {
+        return res.status(400).json({ mensagem: "Por favor informe um id de categoria válido." })
+    }
+
+    try {
+        const categoria = await buscarCategoria(id, idUsuario)
+
+        if (!categoria[0]) {
+            return res.status(404).json({ mensagem: "Categoria não encontrada." })
+        }
+
+        return res.status(200).json(categoria[0])
+    } catch (error) {
+        return res.status(500).json({ erro: error.message })
+    };
+
+}
+
+
 
 module.exports = {
     cadastrar,
-    listar
+    listar,
+    detalhar
 }

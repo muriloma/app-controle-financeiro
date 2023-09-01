@@ -18,7 +18,21 @@ async function verificarSeEmailEmUso(email) {
     }
 };
 
+async function buscarCategoria(categoriaId, usuarioId) {
+    try {
+        const categoria = await pool.query({
+            text: `SELECT * FROM categorias WHERE id = $1 AND usuario_id = $2`,
+            values: [categoriaId, usuarioId]
+        })
+
+        return categoria
+    } catch (error) {
+        return error.message
+    }
+};
+
 
 module.exports = {
-    verificarSeEmailEmUso
+    verificarSeEmailEmUso,
+    buscarCategoria
 }

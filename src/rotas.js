@@ -17,6 +17,9 @@ rotas.put('/usuario', usuario.atualizar)
 
 rotas.post('/categoria', categoria.cadastrar)
 rotas.get('/categoria', categoria.listar)
-rotas.get('/categoria', categoria.detalhar)
+rotas.get('/categoria/:id', categoria.detalhar)
+rotas.delete('/categoria/:id', categoria.excluir)
+rotas.put('/categoria/:id', categoria.atualizar)
+
 
 module.exports = rotas;

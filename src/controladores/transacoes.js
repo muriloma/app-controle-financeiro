@@ -75,8 +75,33 @@ const cadastrar = async (req, res) => {
     }
 };
 
+const extrato = async (req, res) => {
+    const { id: usuarioId } = req.usuario;
+
+    try {
+        const query = 'SELECT SUM(valor) AS total FROM transacoes WHERE usuario_id = $1 AND tipo = $2';
+
+        const { rows: entrada } = await pool.query(query, [usuarioId, 'entrada'])
+        const { rows: saida } = await pool.query(query, [usuarioId, 'saida'])
+
+        const valorEntradas = entrada[0] && entrada[0].total ? entrada[0].total : 0;
+        const valorSaidas = saida[0] && saida[0].total ? saida[0].total : 0;
+
+        const total = {
+            entrada: valorEntradas,
+            saida: valorSaidas,
+        };
+
+        return res.status(200).json(total);
+    } catch (error) {
+        return res.status(500).json({ erro: error.message })
+    }
+
+};
+
 
 module.exports = {
     listar,
-    cadastrar
+    cadastrar,
+    extrato
 };

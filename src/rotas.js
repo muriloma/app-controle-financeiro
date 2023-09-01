@@ -24,5 +24,7 @@ rotas.put('/categoria/:id', categoria.atualizar)
 
 rotas.post('/transacao', transacoes.cadastrar)
 rotas.get('/transacao', transacoes.listar)
+rotas.get('/transacao/extrato', transacoes.extrato)
+
 
 module.exports = rotas;

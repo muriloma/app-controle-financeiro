@@ -73,8 +73,68 @@ const login = async (req, res) => {
     };
 };
 
+const detalhar = async (req, res) => {
+    const { id } = req.usuario;
+
+    if (!id) {
+        return res.status(401).json({ mensagem: "Para acessar este recurso um token de autenticação válido deve ser enviado." })
+    }
+
+    try {
+        const usuario = await pool.query({
+            text: `SELECT id, nome, email FROM usuarios WHERE id = $1`,
+            values: [id]
+        })
+
+        return res.status(200).json(usuario.rows[0])
+    } catch (error) {
+        return res.status(500).json({ erro: error.message })
+    }
+};
+
+const atualizar = async (req, res) => {
+    const { id } = req.usuario;
+    const { nome, email, senha } = req.body;
+
+    if (Object.keys(req.body).length === 0) {
+        return res.status(400).json({ mensagem: "Informe ao menos um dado para ser atualizado." })
+    }
+
+    try {
+        const { rows: usuario } = await pool.query(`SELECT * FROM usuarios WHERE id = $1`, [id])
+
+
+        for (let dado of Object.keys(req.body)) {
+            const queryAtualizarDado = `UPDATE usuarios SET ${dado} = $1 WHERE id = $2`;
+
+            if (dado.toLowerCase() === 'nome') {
+                await pool.query(queryAtualizarDado, [nome, id])
+            }
+
+            if (dado.toLowerCase() === 'email') {
+                if (usuario[0].email !== email) {
+                    if (await verificarSeEmailEmUso(email)) {
+                        return res.status(400).json({ mensagem: 'O e-mail informado já está sendo utilizado por outro usuário.' })
+                    }
+                }
+                await pool.query(queryAtualizarDado, [email, id])
+            }
+
+            if (dado.toLowerCase() === 'senha') {
+                const senhaCriptografada = await bcrypt.hash(senha, 10);
+                await pool.query(queryAtualizarDado, [senhaCriptografada, id])
+            }
+        };
+
+        return res.status(204).send()
+    } catch (error) {
+        return res.status(500).json({ erro: error.message })
+    };
+};
 
 module.exports = {
     cadastrar,
-    login
+    login,
+    detalhar,
+    atualizar
 }

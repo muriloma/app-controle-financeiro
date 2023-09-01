@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const usuario = require('./controladores/usuarios');
 const categoria = require('./controladores/categorias')
+const transacoes = require('./controladores/transacoes')
 const { autenticarLogin } = require('./intermediarios/autenticacao')
 
 
@@ -20,6 +21,8 @@ rotas.get('/categoria', categoria.listar)
 rotas.get('/categoria/:id', categoria.detalhar)
 rotas.delete('/categoria/:id', categoria.excluir)
 rotas.put('/categoria/:id', categoria.atualizar)
+
+rotas.get('/transacao', transacoes.listar)
 
 
 module.exports = rotas;

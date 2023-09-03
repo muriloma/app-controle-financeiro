@@ -53,7 +53,7 @@ const detalhar = async (req, res) => {
             return res.status(404).json({ mensagem: "Categoria não encontrada." })
         }
 
-        return res.status(200).json(categoria[0])
+        return res.status(200).json(categoria.rows[0])
     } catch (error) {
         return res.status(500).json({ erro: error.message })
     };

@@ -125,11 +125,101 @@ const detalhar = async (req, res) => {
     };
 };
 
+const atualizar = async (req, res) => {
+    const { id } = req.params
+    const { usuarioId } = req.usuario
+    let { descricao, valor, data, categoria_id, tipo } = req.body
+
+    if (isNaN(id)) {
+        return res.status(400).json({ mensagem: "Por favor informe um id de transação válido." })
+    }
+
+    if (Object.keys(req.body).length === 0) {
+        return res.status(400).json({ mensagem: "Informe ao menos um dado para ser atualizado." })
+    }
+
+    try {
+        const transacao = await buscarTransacao(id, usuarioId);
+
+        if (transacao.rowCount === 0) {
+            return res.status(404).json({ mensagem: "Transação não encontrada." })
+        };
+
+        if (tipo) {
+            tipo = tipo.toLowerCase()
+            if (tipo !== 'entrada' && tipo !== 'saida') {
+                return res.status(400).json({ mensagem: 'Por favor, informe o tipo de transação correto.' })
+            }
+        };
+
+        if (categoria_id) {
+            if (isNaN(Number(categoria_id))) {
+                return res.status(400).json({ mensagem: "Por favor informe um id de categoria válido." })
+            }
+            const categoria = await buscarCategoria(categoria_id, usuarioId);
+
+            if (categoria.rowCount === 0) {
+                return res.status(404).json({ mensagem: "Essa categoria não existe." })
+            }
+
+            if (categoria.rows[0].usuario_id != usuarioId) {
+                return res.status(404).json({ mensagem: "Categoria não cadastrada para o usuário." })
+            };
+        };
+        if (valor) {
+            if (isNaN(Number(valor))) {
+                return res.status(400).json({ mensagem: "O valor informado deve ser um número válido" })
+            }
+        }
+
+        for (let i = 0; i < Object.keys(req.body).length; i++) {
+            const dado = Object.keys(req.body)[i];
+            const conteudo = Object.values(req.body)[i];
+
+            await pool.query({
+                text: `UPDATE transacoes SET ${dado} = $1 WHERE id = $2`,
+                values: [conteudo, id]
+            })
+        };
+
+        return res.status(204).send()
+    } catch (error) {
+        return res.status(500).json({ erro: error.message })
+    }
+};
+
+const excluir = async (req, res) => {
+    const { id } = req.params
+    const { usuarioId } = req.usuario
+
+    if (isNaN(id)) {
+        return res.status(400).json({ mensagem: "Por favor informe um id de transação válido." })
+    }
+
+    try {
+        const transacao = await buscarTransacao(id, usuarioId)
+
+        if (transacao.rowCount === 0) {
+            return res.status(404).json({ mensagem: "Transação não encontrada." })
+        }
+
+        await pool.query({
+            text: `DELETE FROM transacoes WHERE id = $1 AND usuario_id = $2`,
+            values: [id, usuarioId]
+        })
+
+        return res.status(204).send()
+    } catch (error) {
+        return res.status(500).json({ erro: error.message })
+    }
+};
 
 
 module.exports = {
     listar,
     cadastrar,
     extrato,
-    detalhar
+    detalhar,
+    atualizar,
+    excluir
 };

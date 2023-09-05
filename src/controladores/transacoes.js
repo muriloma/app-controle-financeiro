@@ -127,7 +127,7 @@ const detalhar = async (req, res) => {
 
 const atualizar = async (req, res) => {
     const { id } = req.params
-    const { usuarioId } = req.usuario
+    const { id: usuarioId } = req.usuario
     let { descricao, valor, data, categoria_id, tipo } = req.body
 
     if (isNaN(id)) {
@@ -190,7 +190,7 @@ const atualizar = async (req, res) => {
 
 const excluir = async (req, res) => {
     const { id } = req.params
-    const { usuarioId } = req.usuario
+    const { id: usuarioId } = req.usuario
 
     if (isNaN(id)) {
         return res.status(400).json({ mensagem: "Por favor informe um id de transação válido." })

@@ -31,11 +31,11 @@ async function buscarCategoria(categoriaId, usuarioId) {
     }
 };
 
-async function buscarTransacao(id, usuarioId) {
+async function buscarTransacao(transacaoId, usuarioId) {
     try {
         const transacao = await pool.query({
             text: `SELECT * FROM transacoes WHERE id = $1 AND usuario_id = $2`,
-            values: [id, usuarioId]
+            values: [transacaoId, usuarioId]
         })
 
         return transacao

@@ -24,8 +24,8 @@ rotas.put('/categoria/:id', categoria.atualizar)
 
 rotas.post('/transacao', transacoes.cadastrar)
 rotas.get('/transacao', transacoes.listar)
-rotas.get('/transacao/:id', transacoes.detalhar)
 rotas.get('/transacao/extrato', transacoes.extrato)
+rotas.get('/transacao/:id', transacoes.detalhar)
 rotas.put('/transacao/:id', transacoes.atualizar)
 rotas.delete('/transacao/:id', transacoes.excluir)
 

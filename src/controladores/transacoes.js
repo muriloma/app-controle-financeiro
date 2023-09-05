@@ -84,12 +84,13 @@ const extrato = async (req, res) => {
         const { rows: entrada } = await pool.query(query, [usuarioId, 'entrada'])
         const { rows: saida } = await pool.query(query, [usuarioId, 'saida'])
 
-        const valorEntradas = entrada[0] && entrada[0].total ? entrada[0].total : 0;
-        const valorSaidas = saida[0] && saida[0].total ? saida[0].total : 0;
+        const valorEntradas = entrada[0] && entrada[0].total ? Number(entrada[0].total) : 0;
+        const valorSaidas = saida[0] && saida[0].total ? Number(saida[0].total) : 0;
 
         const total = {
             entrada: valorEntradas,
             saida: valorSaidas,
+            total: (valorEntradas - valorSaidas)
         };
 
         return res.status(200).json(total);

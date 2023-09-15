@@ -135,7 +135,7 @@ Essa é a rota utilizada para cadastrar um novo usuario no sistema.
 
 #### **Exemplo de requisição**
 
-```javascript
+```json
 // POST /usuario
 {
     "nome": "José",
@@ -146,7 +146,7 @@ Essa é a rota utilizada para cadastrar um novo usuario no sistema.
 
 #### **Exemplos de resposta**
 
-```javascript
+```json
 // HTTP Status 201
 {
     "id": 1,
@@ -155,7 +155,7 @@ Essa é a rota utilizada para cadastrar um novo usuario no sistema.
 }
 ```
 
-```javascript
+```json
 // HTTP Status 400
 {
     "mensagem": "Já existe usuário cadastrado com o e-mail informado."
@@ -181,7 +181,7 @@ Essa é a rota que permite o usuario cadastrado realizar o login no sistema.
 
 #### **Exemplo de requisição**
 
-```javascript
+```json
 // POST /login
 {
     "email": "jose@email.com",
@@ -191,7 +191,7 @@ Essa é a rota que permite o usuario cadastrado realizar o login no sistema.
 
 #### **Exemplos de resposta**
 
-```javascript
+```json
 // HTTP Status 200
 {
     "usuario": {
@@ -203,7 +203,7 @@ Essa é a rota que permite o usuario cadastrado realizar o login no sistema.
 }
 ```
 
-```javascript
+```json
 // HTTP Status 404
 {
     "mensagem": "Usuário e/ou senha inválido(s)."
@@ -239,7 +239,7 @@ Essa é a rota que será chamada quando o usuario quiser obter os dados do seu p
 
 #### **Exemplos de resposta**
 
-```javascript
+```json
 // HTTP Status 200
 {
     "id": 1,
@@ -248,7 +248,7 @@ Essa é a rota que será chamada quando o usuario quiser obter os dados do seu p
 }
 ```
 
-```javascript
+```json
 // HTTP Status 401
 {
     "mensagem": "Para acessar este recurso um token de autenticação válido deve ser enviado."
@@ -275,7 +275,7 @@ Essa é a rota que será chamada quando o usuário quiser realizar alterações 
 
 #### **Exemplo de requisição**
 
-```javascript
+```json
 // PUT /usuario
 {
     "nome": "José de Abreu",
@@ -291,7 +291,7 @@ Essa é a rota que será chamada quando o usuário quiser realizar alterações 
 // Sem conteúdo no corpo (body) da resposta
 ```
 
-```javascript
+```json
 // HTTP Status 400
 {
     "mensagem": "O e-mail informado já está sendo utilizado por outro usuário."
@@ -316,7 +316,7 @@ Essa é a rota que será utilizada para cadastrar uma categoria associada ao usu
 
 #### **Exemplo de requisição**
 
-```javascript
+```json
 // POST /categoria
 {
     "descricao": "Mercado"
@@ -325,16 +325,16 @@ Essa é a rota que será utilizada para cadastrar uma categoria associada ao usu
 
 #### **Exemplos de resposta**
 
-```javascript
+```json
 // HTTP Status 201
 {
     "id": 2,
-    "descricao": "Mercado"
-    "usuario_id": 1,
+    "descricao": "Mercado",
+    "usuario_id": 1
 }
 ```
 
-```javascript
+```json
 // HTTP Status 400
 {
     "mensagem": "A descrição da categoria deve ser informada."
@@ -364,18 +364,18 @@ Essa é a rota que será chamada quando o usuario logado quiser listar todas as 
 
 #### **Exemplos de resposta**
 
-```javascript
+```json
 // HTTP Status 200
 ;[
     {
-        id: 1,
-        descricao: "Roupas",
-        usuario_id: 1,
+        "id": 1,
+        "descricao": "Roupas",
+        "usuario_id": 1,
     },
     {
-        id: 2,
-        descricao: "Mercado",
-        usuario_id: 1,
+        "id": 2,
+        "descricao": "Mercado",
+        "usuario_id": 1,
     },
 ]
 ```
@@ -408,16 +408,16 @@ Essa é a rota que será chamada quando o usuario logado quiser obter uma das su
 
 #### **Exemplos de resposta**
 
-```javascript
+```json
 // HTTP Status 200
 {
     "id": 2,
-    "descricao": "Mercado"
-    "usuario_id": 1,
+    "descricao": "Mercado",
+    "usuario_id": 1
 }
 ```
 
-```javascript
+```json
 // HTTP Status 404
 {
     "mensagem": "Categoria não encontrada."
@@ -442,7 +442,7 @@ Essa é a rota que será chamada quando o usuario logado quiser atualizar uma da
 
 #### **Exemplo de requisição**
 
-```javascript
+```json
 // PUT /categoria/2
 {
     "descricao": "Presentes"
@@ -456,7 +456,7 @@ Essa é a rota que será chamada quando o usuario logado quiser atualizar uma da
 // Sem conteúdo no corpo (body) da resposta
 ```
 
-```javascript
+```json
 // HTTP Status 400
 {
     "mensagem": "A descrição da categoria deve ser informada."
@@ -491,7 +491,7 @@ Essa é a rota que será chamada quando o usuario logado quiser excluir uma das 
 // Sem conteúdo no corpo (body) da resposta
 ```
 
-```javascript
+```json
 // HTTP Status 404
 {
     "mensagem": "Categoria não encontrada."
@@ -520,7 +520,7 @@ Essa é a rota utilizada para cadastrar uma transação associada ao usuário lo
 
 #### **Exemplo de requisição**
 
-```javascript
+```json
 // POST /transacao
 {
     "tipo": "entrada",
@@ -547,7 +547,7 @@ Essa é a rota utilizada para cadastrar uma transação associada ao usuário lo
 }
 ```
 
-```javascript
+```json
 // HTTP Status 400
 {
     "mensagem": "Todos os campos obrigatórios devem ser informados."
@@ -578,38 +578,38 @@ Nesta funcionalidade de listagem de transações, podemos incluir um parâmetro 
 
 #### **Exemplos de resposta**
 
-```javascript
+```json
 // HTTP Status 200
 ;[
     {
-        id: 1,
-        tipo: "saida",
-        descricao: "Sapato amarelo",
-        valor: 15800,
-        data: "2022-03-23T15:35:00.000Z",
-        usuario_id: 5,
-        categoria_id: 4,
-        categoria_nome: "Roupas",
+        "id": 1,
+        "tipo": "saida",
+        "descricao": "Sapato amarelo",
+        "valor": 15800,
+        "data": "2022-03-23T15:35:00.000Z",
+        "usuario_id": 5,
+        "categoria_id": 4,
+        "categoria_nome": "Roupas",
     },
     {
-        id: 3,
-        tipo: "entrada",
-        descricao: "Salário",
-        valor: 300000,
-        data: "2022-03-24T15:30:00.000Z",
-        usuario_id: 5,
-        categoria_id: 6,
-        categoria_nome: "Salários",
+        "id": 3,
+        "tipo": "entrada",
+        "descricao": "Salário",
+        "valor": 300000,
+        "data": "2022-03-24T15:30:00.000Z",
+        "usuario_id": 5,
+        "categoria_id": 6,
+        "categoria_nome": "Salários",
     },
     {
-        id: 4,
-        tipo: "saida",
-        descricao: "Mercado",
-        valor: 300000,
-        data: "2022-03-24T15:30:00.000Z",
-        usuario_id: 5,
-        categoria_id: 7,
-        categoria_nome: "Alimentação",
+        "id": 4,
+        "tipo": "saida",
+        "descricao": "Mercado",
+        "valor": 300000,
+        "data": "2022-03-24T15:30:00.000Z",
+        "usuario_id": 5,
+        "categoria_id": 7,
+        "categoria_nome": "Alimentação",
     }
 ]
 ```
@@ -627,28 +627,28 @@ Nesta funcionalidade de listagem de transações, podemos incluir um parâmetro 
 
 #### **Exemplos de resposta**
 
-```javascript
+```json
 // HTTP Status 200
 ;[
     {
-        id: 1,
-        tipo: "saida",
-        descricao: "Sapato amarelo",
-        valor: 15800,
-        data: "2022-03-23T15:35:00.000Z",
-        usuario_id: 5,
-        categoria_id: 4,
-        categoria_nome: "Roupas",
+        "id": 1,
+        "tipo": "saida",
+        "descricao": "Sapato amarelo",
+        "valor": 15800,
+        "data": "2022-03-23T15:35:00.000Z",
+        "usuario_id": 5,
+        "categoria_id": 4,
+        "categoria_nome": "Roupas",
     },
     {
-        id: 3,
-        tipo: "entrada",
-        descricao: "Salário",
-        valor: 300000,
-        data: "2022-03-24T15:30:00.000Z",
-        usuario_id: 5,
-        categoria_id: 6,
-        categoria_nome: "Salários",
+        "id": 3,
+        "tipo": "entrada",
+        "descricao": "Salário",
+        "valor": 300000,
+        "data": "2022-03-24T15:30:00.000Z",
+        "usuario_id": 5,
+        "categoria_id": 6,
+        "categoria_nome": "Salários",
     },
 ]
 ```
@@ -683,7 +683,7 @@ Essa é a rota que será chamada quando o usuario logado quiser obter uma das su
 
 #### **Exemplos de resposta**
 
-```javascript
+```json
 // HTTP Status 200
 {
     "id": 3,
@@ -697,7 +697,7 @@ Essa é a rota que será chamada quando o usuario logado quiser obter uma das su
 }
 ```
 
-```javascript
+```json
 // HTTP Status 404
 {
     "mensagem": "Transação não encontrada."
@@ -727,7 +727,7 @@ Essa é a rota que será chamada quando o usuario logado quiser atualizar uma da
 
 #### **Exemplo de requisição**
 
-```javascript
+```json
 // PUT /transacao/2
 {
 	"descricao": "Sapato amarelo",
@@ -745,7 +745,7 @@ Essa é a rota que será chamada quando o usuario logado quiser atualizar uma da
 // Sem conteúdo no corpo (body) da resposta
 ```
 
-```javascript
+```json
 // HTTP Status 400
 {
     "mensagem": "Informe ao menos um dado para ser atualizado."
@@ -781,7 +781,7 @@ Essa é a rota que será chamada quando o usuario logado quiser excluir uma das 
 // Sem conteúdo no corpo (body) da resposta
 ```
 
-```javascript
+```json
 // HTTP Status 404
 {
     "mensagem": "Transação não encontrada."
@@ -811,7 +811,7 @@ Essa é a rota que será chamada quando o usuario logado quiser obter o saldo de
 
 #### **Exemplos de resposta**
 
-```javascript
+```json
 // HTTP Status 200
 {
 	"entrada": 300000,
